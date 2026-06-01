@@ -1,4 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/InterVariable-Italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 
 @theme {
@@ -30,13 +45,11 @@ a:hover {
 
 @layer components {
   .title-1 {
-    @apply text-3xl lg:text-5xl text-slate-50 font-extrabold font-sans mb-3
-      tracking-tight;
+    @apply text-3xl lg:text-5xl text-slate-50 font-extrabold font-sans mb-3 tracking-tight;
   }
 
   .title-2 {
-    @apply text-2xl lg:text-4xl text-slate-100 font-bold font-sans mb-2
-      tracking-tight;
+    @apply text-2xl lg:text-4xl text-slate-100 font-bold font-sans mb-2 tracking-tight;
   }
 
   .title-3 {
@@ -44,8 +57,7 @@ a:hover {
   }
 
   .warn {
-    @apply text-xs px-2 py-0.5 ml-2 font-medium bg-slate-900 text-orange-400
-      border border-orange-500/30 tracking-wide inline-block -translate-y-[1px];
+    @apply text-xs px-2 py-0.5 ml-2 font-medium bg-slate-900 text-orange-400 border border-orange-500/30 tracking-wide inline-block -translate-y-[1px];
   }
 }
 

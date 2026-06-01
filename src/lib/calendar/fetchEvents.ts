@@ -10,7 +10,7 @@ function getCalendarQueryWindow(anchorDate = new Date()): CalendarWindow {
   const month = anchorDate.getMonth();
 
   return {
-    timeMin: new Date(year, month - 1, 1).toISOString(),
+    timeMin: new Date(year, month, 1).toISOString(),
     timeMax: new Date(year, month + 2, 0).toISOString(),
   };
 }

@@ -17,6 +17,7 @@ import {
   formatTimeFromIso,
   getActiveTimezone,
   setActiveTimezone,
+  safeParseIsoDate,
 } from "../lib/calendar/date";
 import type { CalendarEvent } from "../lib/calendar/types";
 
@@ -196,12 +197,41 @@ function buildEventsByDay(events: CalendarEvent[]): Map<string, CalendarEvent[]>
   const grouped = new Map<string, CalendarEvent[]>();
 
   events.forEach((event) => {
-    const dayKey = dayKeyFromIso(event.start);
-    if (!dayKey) return;
+    const startKey = dayKeyFromIso(event.start);
+    if (!startKey) return;
 
-    const dayEvents = grouped.get(dayKey) ?? [];
-    dayEvents.push(event);
-    grouped.set(dayKey, dayEvents);
+    if (!event.end) {
+      const dayEvents = grouped.get(startKey) ?? [];
+      dayEvents.push(event);
+      grouped.set(startKey, dayEvents);
+      return;
+    }
+
+    const startDate = safeParseIsoDate(event.start);
+    const endDate = safeParseIsoDate(event.end);
+
+    if (!startDate || !endDate) {
+      const dayEvents = grouped.get(startKey) ?? [];
+      dayEvents.push(event);
+      grouped.set(startKey, dayEvents);
+      return;
+    }
+
+    const adjustedEnd = new Date(endDate.getTime() - 1);
+    let daysSpanned: Date[];
+
+    try {
+      daysSpanned = eachDayOfInterval({ start: startDate, end: adjustedEnd });
+    } catch {
+      daysSpanned = [startDate];
+    }
+
+    daysSpanned.forEach((day) => {
+      const dayKey = dayKeyFromDate(day);
+      const dayEvents = grouped.get(dayKey) ?? [];
+      dayEvents.push(event);
+      grouped.set(dayKey, dayEvents);
+    });
   });
 
   return grouped;

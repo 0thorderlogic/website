@@ -31,7 +31,7 @@ export function getActiveTimezone(): string {
   return activeTimezone;
 }
 
-function safeParseIsoDate(isoDate: string): Date | null {
+export function safeParseIsoDate(isoDate: string): Date | null {
   const parsed = parseISO(isoDate);
   return isValid(parsed) ? parsed : null;
 }
