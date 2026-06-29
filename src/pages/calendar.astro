@@ -4,31 +4,19 @@ import CalendarGrid from "../components/calendar/CalendarGrid.astro";
 import CalendarHeader from "../components/calendar/CalendarHeader.astro";
 import CalendarModal from "../components/calendar/CalendarModal.astro";
 import { CALENDAR_IDS } from "../lib/calendar/constants";
-import { fetchCalendarEvents } from "../lib/calendar/fetchEvents";
-import type { CalendarEvent } from "../lib/calendar/types";
 
 const apiKey = import.meta.env.GOOGLE_API_KEY;
 const calendarId = import.meta.env.GOOGLE_CALENDAR_ID;
-
-let events: CalendarEvent[] = [];
-let error: string | null = null;
-
-if (apiKey && calendarId) {
-  try {
-    events = await fetchCalendarEvents(apiKey, calendarId);
-  } catch (cause) {
-    error = cause instanceof Error ? cause.message : "Failed to fetch calendar events.";
-  }
-} else {
-  error = "Google Calendar API key or Calendar ID is missing in environment variables.";
-}
+const hasCredentials = Boolean(apiKey && calendarId);
 ---
 
 <Layout title="Calendar">
   <section class="w-full space-y-8">
     {
-      error ? (
-        <p class="text-red-500">{error}</p>
+      !hasCredentials ? (
+        <p class="text-red-500">
+          Google Calendar API key or Calendar ID is missing in environment variables.
+        </p>
       ) : (
         <div id={CALENDAR_IDS.container}>
           <CalendarHeader />
@@ -41,16 +29,16 @@ if (apiKey && calendarId) {
   <CalendarModal />
 
   {
-    !error && (
+    hasCredentials && (
       <>
         <script
-          id="calendar-events-data"
+          id="calendar-credentials"
           type="application/json"
-          set:html={JSON.stringify(events)}
+          set:html={JSON.stringify({ apiKey, calendarId })}
         />
         <script>
-          import {initCalendarFromDom} from "../scripts/calendar";
-          initCalendarFromDom("calendar-events-data");
+          import {initCalendarWithFetch} from "../scripts/calendar";
+          initCalendarWithFetch("calendar-credentials");
         </script>
       </>
     )

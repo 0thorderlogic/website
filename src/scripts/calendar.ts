@@ -401,3 +401,39 @@ export function initCalendar(events: CalendarEvent[]): void {
 export function initCalendarFromDom(scriptId: string): void {
   initCalendar(readEventsFromJsonScript(scriptId));
 }
+
+export async function initCalendarWithFetch(credentialsScriptId: string): Promise<void> {
+  const script = document.getElementById(credentialsScriptId);
+  if (!script?.textContent) return;
+
+  let apiKey: string;
+  let calendarId: string;
+  try {
+    const creds = JSON.parse(script.textContent) as { apiKey: string; calendarId: string };
+    apiKey = creds.apiKey;
+    calendarId = creds.calendarId;
+  } catch {
+    return;
+  }
+  if (!apiKey || !calendarId) return;
+
+  const grid = document.getElementById(CALENDAR_IDS.grid);
+  if (grid) {
+    grid.innerHTML =
+      '<div class="col-span-7 py-10 text-center text-sm" style="color:var(--theme-text-muted)">loading events…</div>';
+  }
+
+  let events: CalendarEvent[] = [];
+  try {
+    const { fetchCalendarEvents } = await import("../lib/calendar/fetchEvents");
+    events = await fetchCalendarEvents(apiKey, calendarId);
+  } catch {
+    if (grid) {
+      grid.innerHTML =
+        '<div class="col-span-7 py-10 text-center text-sm text-red-400">failed to load events.</div>';
+    }
+    return;
+  }
+
+  initCalendar(events);
+}

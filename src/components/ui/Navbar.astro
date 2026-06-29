@@ -5,12 +5,13 @@ const { links } = navData;
 ---
 
 <nav>
-  <ul class="flex flex-wrap items-center gap-2 md:gap-3">
+  <!-- Desktop nav -->
+  <ul class="hidden sm:flex flex-wrap items-center gap-2 md:gap-3">
     {
       links.map((link) => (
         <li>
           <a
-            class="text-emerald-500! hover:text-mist-400! no-underline! hover:no-underline! font-bold tracking-tight transition-colors text-md md:text-lg"
+            class="text-emerald-500! hover:text-emerald-400! no-underline! hover:no-underline! font-bold tracking-tight transition-colors text-md md:text-lg"
             href={link.href}
           >
             {link.name}
@@ -19,4 +20,57 @@ const { links } = navData;
       ))
     }
   </ul>
+
+  <!-- Mobile menu -->
+  <div class="sm:hidden relative">
+    <button
+      id="mobile-menu-btn"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      class="flex items-center gap-1 px-3 py-1.5 rounded-md border border-slate-700 bg-slate-900 hover:bg-slate-800 transition-colors font-bold tracking-tight text-emerald-500"
+    >
+      <span>goto</span>
+      <span id="caret" class="inline-block transition-transform duration-200">&#8964;</span>
+    </button>
+
+    <div
+      id="mobile-menu"
+      class="absolute right-0 top-full mt-2 w-36 bg-slate-900 border border-slate-700 rounded-md shadow-lg shadow-black/40 overflow-hidden hidden z-50"
+    >
+      <ul class="flex flex-col py-1">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                class="block px-4 py-2.5 text-emerald-500! hover:text-emerald-400! no-underline! font-bold tracking-tight transition-colors text-base"
+                href={link.href}
+              >
+                {link.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
 </nav>
+
+<script>
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  const caret = document.getElementById("caret");
+
+  btn?.addEventListener("click", () => {
+    const isOpen = menu?.classList.toggle("hidden") === false;
+    btn.setAttribute("aria-expanded", String(isOpen));
+    caret?.classList.toggle("rotate-180", isOpen);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!btn?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      menu?.classList.add("hidden");
+      btn?.setAttribute("aria-expanded", "false");
+      caret?.classList.remove("rotate-180");
+    }
+  });
+</script>

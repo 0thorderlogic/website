@@ -2,40 +2,47 @@
 import { name } from "../../../consts";
 ---
 
-<footer class="mt-auto py-6 text-sm text-center text-slate-400 border-t border-slate-400/20">
-  <div
-    class="mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-3 px-2 text-xs leading-relaxed opacity-90 sm:gap-4 sm:px-0 sm:text-sm lg:flex-row lg:flex-nowrap lg:gap-5"
-  >
-    <p class="m-0 flex flex-wrap items-center justify-center gap-1 lg:flex-nowrap">
-      <span>This work is licensed under</span>
-      <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+<footer class="mt-auto py-6 border-t border-slate-400/20 text-slate-400 text-xs">
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+    <!-- License -->
+    <p class="m-0 flex items-center gap-1.5 flex-wrap">
+      <span>CC BY-SA 4.0</span>
       <img
         src="https://mirrors.creativecommons.org/presskit/icons/cc.svg"
-        alt="CC badge"
+        alt="CC"
         aria-hidden="true"
-        class="size-4"
+        class="size-3.5 opacity-70"
       />
       <img
         src="https://mirrors.creativecommons.org/presskit/icons/by.svg"
-        alt="CC badge"
+        alt="BY"
         aria-hidden="true"
-        class="size-4"
+        class="size-3.5 opacity-70"
       />
       <img
         src="https://mirrors.creativecommons.org/presskit/icons/sa.svg"
-        alt="CC badge"
+        alt="SA"
         aria-hidden="true"
-        class="size-4"
+        class="size-3.5 opacity-70"
       />
     </p>
 
-    <a target="_blank" href="https://notbyai.fyi">
-      <img class="w-28 sm:w-32 md:w-40 lg:w-48" src="/notbyai.png" alt="Not by AI badge" />
+    <!-- Not by AI badge — center -->
+    <a target="_blank" href="https://notbyai.fyi" class="shrink-0">
+      <img
+        class="w-36 opacity-70 hover:opacity-100 transition-opacity"
+        src="/notbyai.png"
+        alt="Not by AI badge"
+      />
     </a>
 
-    <p class="m-0">
-      <a href="https://github.com/0thorderlogic/man-pages" target="_blank">Theme source</a> |
-      <a href="https://github.com/0thorderlogic/a115.xyz" target="_blank">Site source</a> | Copyleft (2016-2026)
+    <!-- Source links -->
+    <p class="m-0 text-center sm:text-right">
+      <a href="https://github.com/0thorderlogic/man-pages" target="_blank">Theme source</a>
+      <span class="opacity-40 mx-1">|</span>
+      <a href="https://github.com/0thorderlogic/a115.xyz" target="_blank">Site source</a>
+      <span class="opacity-40 mx-1">|</span>
+      <span>© 2016-2026</span>
     </p>
   </div>
 </footer>
